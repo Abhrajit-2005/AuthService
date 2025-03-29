@@ -1,4 +1,4 @@
-const { User } = require('../models/index')
+const { User, Role } = require('../models/index')
 class UserRepository {
     async createUser({ email, password }) {
         try {
@@ -9,11 +9,11 @@ class UserRepository {
             throw error;
         }
     }
-    async deleteUser(userid) {
+    async deleteUser(id) {
         try {
             await User.destroy({
                 where: {
-                    id: userid,
+                    id: id,
                 }
             })
             return true;
@@ -49,6 +49,43 @@ class UserRepository {
             throw error;
         }
     }
+
+    async isAdmin(id) {
+        try {
+            const user = await User.findByPk(id);
+            const admin = await Role.findOne({
+                where: {
+                    name: 'ADMIN',
+                }
+            })
+            return user.hasRole(admin);
+        } catch (error) {
+            console.log("Something went wrong with the repository layer");
+            throw error;
+        }
+    }
+
+    async addRoleToUser(id, roleName) {
+        try {
+            const user = await User.findByPk(id);
+            if (!user) {
+                throw new Error("User not found");
+            }
+
+            const role = await Role.findOne({ where: { name: roleName.toUpperCase() } });
+
+            if (!role) {
+                throw new Error("Role not found");
+            }
+
+            return await user.addRole(role);
+
+        } catch (error) {
+            console.log("Something went wrong in the repository layer");
+            throw error;
+        }
+    }
+
 }
 
 module.exports = UserRepository;

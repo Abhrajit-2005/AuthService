@@ -84,9 +84,45 @@ const isAuthenticated = async (req, res) => {
         })
     }
 }
-
+const isAdmin = async (req, res) => {
+    try {
+        const response = await userService.isAdmin(req.body.id);
+        return res.status(200).json({
+            data: response,
+            message: 'User fetched is Admin/not',
+            success: true,
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            message: 'Internal Server Error',
+            success: false,
+            err: error
+        })
+    }
+}
+const addRole = async (req, res) => {
+    try {
+        const response = await userService.addRole(req.body.id, req.body.roleName);
+        return res.status(200).json({
+            data: response,
+            message: `Role added to user successfully`,
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            message: 'Internal Server Error',
+            success: false,
+            err: error
+        })
+    }
+}
 module.exports = {
     createUser,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin,
+    addRole
 }

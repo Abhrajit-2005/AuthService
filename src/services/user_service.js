@@ -83,6 +83,25 @@ class UserService {
             throw error;
         }
     }
+    isAdmin(id) {
+        try {
+            const response = this.repository.isAdmin(id);
+            return response;
+        } catch (error) {
+            console.log("Admin verifying went wrong in service layer");
+            throw error;
+        }
+    }
+
+    addRole(id, roleName) {
+        try {
+            const response = this.repository.addRoleToUser(id, roleName);
+            return response;
+        } catch (error) {
+            console.log("Role Adding went wrong in service layer");
+            throw error;
+        }
+    }
 
 }
 

@@ -8,7 +8,8 @@ if (!process.env.JWT_KEY) {
 }
 
 module.exports = {
-    PORT: process.env.PORT || 3000,
+    PORT: process.env.PORT,
     SALT: bcrypt.genSaltSync(8),
-    JWT_KEY: process.env.JWT_KEY
+    JWT_KEY: process.env.JWT_KEY,
+    DB_SYNC: process.env.DB_SYNC
 };
